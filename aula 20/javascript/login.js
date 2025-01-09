@@ -1,57 +1,25 @@
-document.addEventListener('DOMContentLoaded', () =>{
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    const loginButton = document.getElementById('loginButton');
-    const regsiterButton = document.getElementById('registerButton');
+async function login(){
+    //obtém os valores dos inputs
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
 
-    if(loginButton){
-        loginButton.addEventListener('click', async () =>{
-            const username = usernameInput.value;
-            const password = passwordInput.value;
+    try{
+        //faz a requisição post para o endpoint de login
+        const response = await fetch ('http://localhost:8080/login',{
+            method: 'POST',
+            headers: {'Content-Type' : 'application/json'},
+            body: JSON.stringify({username, password}),
+        });
 
-            try{
-                const response = await fetch ('http://localhost:8000/login', {
-                    method: 'POST',
-                    headers: {'Content-Type' : 'application/json'},
-                    body: JSON.stringify({username, password}),
-                });
+        if(!response.ok){
+            throw new Error ("Erro na resposta do servidor: " + response.statusText);
+        }
 
-                if(response.ok){
-                    const result = await response.text();
-                    alert(`Login bem-sucedido ${result}`);
-                }else{
-                    alert(`Erro ao fazer login. Verifique suas credenciais`)
-                }
-            }catch(error){
-                console.error('Erro ao conectar á API:', error);
-                alert('Erro ao conectar á API.');
-            }
-        })
-    }
-
-    if(regsiterButton){
-        regsiterButton.addEventListener('click', async () => {
-            const username = usernameInput.value;
-            const password = passwordInput.value;
-
-            try{
-                const response = await fetch('http://localhost:8000/register',{
-                    method:'POST',
-                    headers: {'Content-Type' : 'application/json'},
-                    body: JSON.stringify({username, password}),
-                });
-
-                if(response.ok){
-                    const result = await response.text();
-                    alert(`Registro bem-sucedido ${result}`);
-                }else{
-                    alert('Erro ao registrar.Tente novamente.')
-                }
-            }catch(error){
-                console.error('Erro ao conectar a API: ', error);
-                alert(`Erro ao conectar a API`);
-            }
-        })
+        //processa a resposta
+        const result = await response.text();
+        alert(`Login bem-sucedido ${result}`);
+    }catch(error){
+        console.error('Erro ao conectar a API', error);
+        alert('Erro ao tentar fazer login, tente novamente');
     }
 }
-);
