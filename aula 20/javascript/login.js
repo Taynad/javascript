@@ -21,8 +21,8 @@ async function login(){
         }
 
         //processa a resposta
-        const result = await response.text();
-        alert(`${result}`);
+        const result = await response.json();
+        showFeedbackMenssage(result.message, result.type); 
     }catch(error){
         console.error('Erro ao conectar a API', error);
         alert('Erro ao tentar fazer login, tente novamente');
@@ -58,4 +58,15 @@ async function register(){
         console.error('Erro ao conectar a API', error);
         alert('Erro ao registrar, tente novamente')
     }
+}
+
+function showFeedbackMenssage(message, type = 'success'){
+    const feedbackElement = document.getElementById('feedback-message');
+    feedbackElement.textContent = message;
+    feedbackElement.className = `feedback-message ${type}`;
+    feedbackElement.style.display = 'block';
+    setTimeout(() =>{
+        feedbackElement.style.display = 'none';
+    }, 5000);
+
 }
