@@ -17,7 +17,8 @@ async function login(){
         });
 
         if(!response.ok){
-            throw new Error ("Erro na resposta do servidor: " + response.statusText);
+            const result = await response.json(); // Obtém a resposta em JSON
+            throw new Error(result.message || "Erro desconhecido");
         }
 
         //processa a resposta
@@ -25,7 +26,7 @@ async function login(){
         showFeedbackMenssage(result.message, result.type); 
     }catch(error){
         console.error('Erro ao conectar a API', error);
-        alert('Erro ao tentar fazer login, tente novamente');
+        showFeedbackMenssage(error.message, "error");
     }
 }
 
@@ -48,15 +49,16 @@ async function register(){
         });
 
         if(!response.ok){
-            throw new Error ("Erro na resposta do servidor: " + response.statusText);
+            const result = await response.json(); // Obtém a resposta em JSON
+            throw new Error(result.message || "Erro desconhecido");
         }
 
         //processa a resposta da API
-        const result = await response.text();
-        alert(`${result}`);
+        const result = await response.json();
+        showFeedbackMenssage(result.message, result.type); 
     }catch(error){
         console.error('Erro ao conectar a API', error);
-        alert('Erro ao registrar, tente novamente')
+        showFeedbackMenssage(error.message, "error");
     }
 }
 
