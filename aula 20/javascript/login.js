@@ -63,10 +63,16 @@ async function register(){
 }
 
 function showFeedbackMenssage(message, type = 'success'){
+    //obtendo o elemento do html
     const feedbackElement = document.getElementById('feedback-message');
+    //define o texto da mensagem a ser exibida
     feedbackElement.textContent = message;
+    //modifica a classe para incluir o tipo de classe do css se é error ou sucess
     feedbackElement.className = `feedback-message ${type}`;
+    //exibe o elemento com o block
     feedbackElement.style.display = 'block';
+    //função para criar um temporizador que vai executar a função, altera para none tornando invisivel
+    //isso cria o efeito da mensagem desaparecer depois de 5 segundos
     setTimeout(() =>{
         feedbackElement.style.display = 'none';
     }, 5000);
